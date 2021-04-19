@@ -10,9 +10,6 @@ interface UserCreationAtt {
   name: string
 }
 
-@DefaultScope(() => ({
-  attributes: {exclude: ['password']}
-}))
 @Table({tableName: 'users'})
 export class User extends Model<User, UserCreationAtt> {
 

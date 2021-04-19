@@ -17,10 +17,18 @@ export class UsersService {
     const user = await this.userRepo.create(dto)
     const role = await this.roleService.getRoleByValue('USER')
     await user.$set('roles', [role.id])
-    return user
+    user.roles = [role]
+    return await this.userRepo.findOne({
+      where: {id: user.id},
+      attributes: {exclude: ['password']}
+    })
   }
 
   async getAllUsers(): Promise<User[]> {
     return await this.userRepo.findAll({include: {all: true}})
+  }
+
+  async getUserByEmail(email: string) {
+    return await this.userRepo.findOne({where: {email}, include: {all: true}})
   }
 }
